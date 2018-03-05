@@ -312,6 +312,7 @@ class Agent:
         PropertyClass = self.type_map[(property_type, payment_type)]
         init_args = PropertyClass.prompt_init()
         self.property_list.append(PropertyClass(**init_args))
+    
 
 agent = Agent()
 agent.add_property()
