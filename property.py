@@ -27,6 +27,7 @@ class Property:
         print("bathrooms: {}".format(self.num_baths))
         print()
 
+    @staticmethod
     def prompt_init():
         '''
         Return a dictionary for adding and representing all information
@@ -154,11 +155,10 @@ class Purchase:
     '''
     Represent the price and taxes of something
     '''
-    def __init__(self, price='', taxes='', **kwargs):
+    def __init__(self, price='', taxes=''):
         '''
         Initializing an object...
         '''
-        super().__init__(**kwargs)
         self.price = price
         self.taxes = taxes
 
@@ -189,11 +189,10 @@ class Rental:
     '''
     Represent the information about some property that wil be rented
     '''
-    def __init__(self, furnished='', utilities='', rent='', **kwargs):
+    def __init__(self, furnished='', utilities='', rent=''):
         '''
         Initializing an object...
         '''
-        super().__init__(**kwargs)
         self.furnished = furnished
         self.rent = rent
         self.utilities = utilities
@@ -203,7 +202,6 @@ class Rental:
         Represent all details about price and common data about property
         that is comfortable for user
         '''
-        super().display()
         print("RENTAL DETAILS")
         print("rent: {}".format(self.rent))
         print("estimated utilities: {}".format(self.utilities))
@@ -224,11 +222,22 @@ class Rental:
     prompt_init = staticmethod(prompt_init)
 
 
-class HouseRental(Rental, House):
+class HouseRental:
     '''
     For calling another classes and getting information from user about
     a house which will be rented. Kind of boss;)
     '''
+    def __init__(self, **kwargs):
+        '''
+        Initializing an object...
+        '''
+        self.rental = Rental(**kwargs)
+        self.house = House(**kwargs)
+
+    def display(self):
+        self.rental.display()
+        self.house.display()
+
     def prompt_init():
         '''
         Update and return the dictionary with all information about a house
@@ -240,11 +249,23 @@ class HouseRental(Rental, House):
     prompt_init = staticmethod(prompt_init)
 
 
-class ApartmentRental(Rental, Apartment):
+class ApartmentRental:
     '''
     For calling another classes and getting information from user about
     an apartment which will be rented. Kind of boss;)
     '''
+
+    def __init__(self, **kwargs):
+        '''
+        Initializing an object...
+        '''
+        self.rental = Rental(**kwargs)
+        self.apartment = Apartment(**kwargs)
+
+    def display(self):
+        self.rental.display()
+        self.apartment.display()
+
     def prompt_init():
         '''
         Update and return the dictionary with all information about an
@@ -257,11 +278,22 @@ class ApartmentRental(Rental, Apartment):
     prompt_init = staticmethod(prompt_init)
 
 
-class ApartmentPurchase(Purchase, Apartment):
+class ApartmentPurchase:
     '''
     For calling another classes and getting information from user about
     an apartment which will be purchased. Kind of boss;)
     '''
+    def __init__(self, **kwargs):
+        '''
+        Initializing an object...
+        '''
+        self.purchase = Purchase(**kwargs)
+        self.apartment = Apartment(**kwargs)
+
+    def display(self):
+        self.purchase.display()
+        self.apartment.display()
+
     def prompt_init():
         '''
         Update and return the dictionary with all information about an
@@ -274,11 +306,22 @@ class ApartmentPurchase(Purchase, Apartment):
     prompt_init = staticmethod(prompt_init)
 
 
-class HousePurchase(Purchase, House):
+class HousePurchase:
     '''
     For calling another classes and getting information from user about
     a house which will be purchased. Kind of boss;)
     '''
+    def __init__(self, **kwargs):
+        '''
+        Initializing an object...
+        '''
+        self.purchase = Purchase(**kwargs)
+        self.house = House(**kwargs)
+
+    def display(self):
+        self.purchase.display()
+        self.house.display()
+
     def prompt_init():
         '''
         Update and return the dictionary with all information about a house
@@ -291,10 +334,19 @@ class HousePurchase(Purchase, House):
 
 
 class Agent:
+    '''
+    Class for agent which calls all other classes
+    '''
     def __init__(self):
+        '''
+        Initializing an object...
+        '''
         self.property_list = []
 
     def display_properties(self):
+        '''
+        Show all information 
+        '''
         for property in self.property_list:
             property.display()
 
@@ -304,6 +356,9 @@ class Agent:
                 ("apartment", "purchase"): ApartmentPurchase}
 
     def add_property(self):
+        '''
+        Get all information from user
+        '''
         property_type = get_valid_input("What type of property? ",
                                         ("house", "apartment")).lower()
         payment_type = get_valid_input("What payment type? ",
@@ -312,3 +367,7 @@ class Agent:
         PropertyClass = self.type_map[(property_type, payment_type)]
         init_args = PropertyClass.prompt_init()
         self.property_list.append(PropertyClass(**init_args))
+
+agent = Agent()
+agent.add_property()
+agent.display_properties()
