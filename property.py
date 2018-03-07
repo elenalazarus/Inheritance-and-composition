@@ -7,11 +7,12 @@ class Property:
     data like number of bedrooms, bathroomd, square feet
     '''
 
-    def __init__(self, square_feet='', beds='', baths=''):
+    def __init__(self, square_feet='', beds='', baths='', **kwargs):
         '''
         Initializing an object...
         '''
-        # All essentioal properties
+        # All essential properties
+        super().__init__(**kwargs)
         self.square_feet = square_feet
         self.num_bedrooms = beds
         self.num_baths = baths
@@ -155,10 +156,12 @@ class Purchase:
     '''
     Represent the price and taxes of something
     '''
-    def __init__(self, price='', taxes=''):
+
+    def __init__(self, price='', taxes='', **kwargs):
         '''
         Initializing an object...
         '''
+        super().__init__(**kwargs)
         self.price = price
         self.taxes = taxes
 
@@ -189,10 +192,12 @@ class Rental:
     '''
     Represent the information about some property that wil be rented
     '''
-    def __init__(self, furnished='', utilities='', rent=''):
+
+    def __init__(self, furnished='', utilities='', rent='', **kwargs):
         '''
         Initializing an object...
         '''
+        super().__init__(**kwargs)
         self.furnished = furnished
         self.rent = rent
         self.utilities = utilities
@@ -202,6 +207,7 @@ class Rental:
         Represent all details about price and common data about property
         that is comfortable for user
         '''
+        super().display()
         print("RENTAL DETAILS")
         print("rent: {}".format(self.rent))
         print("estimated utilities: {}".format(self.utilities))
@@ -222,21 +228,11 @@ class Rental:
     prompt_init = staticmethod(prompt_init)
 
 
-class HouseRental:
+class HouseRental(Rental, House):
     '''
     For calling another classes and getting information from user about
     a house which will be rented. Kind of boss;)
     '''
-    def __init__(self, **kwargs):
-        '''
-        Initializing an object...
-        '''
-        self.rental = Rental(**kwargs)
-        self.house = House(**kwargs)
-
-    def display(self):
-        self.rental.display()
-        self.house.display()
 
     def prompt_init():
         '''
@@ -249,22 +245,11 @@ class HouseRental:
     prompt_init = staticmethod(prompt_init)
 
 
-class ApartmentRental:
+class ApartmentRental(Rental, Apartment):
     '''
     For calling another classes and getting information from user about
     an apartment which will be rented. Kind of boss;)
     '''
-
-    def __init__(self, **kwargs):
-        '''
-        Initializing an object...
-        '''
-        self.rental = Rental(**kwargs)
-        self.apartment = Apartment(**kwargs)
-
-    def display(self):
-        self.rental.display()
-        self.apartment.display()
 
     def prompt_init():
         '''
@@ -278,21 +263,11 @@ class ApartmentRental:
     prompt_init = staticmethod(prompt_init)
 
 
-class ApartmentPurchase:
+class ApartmentPurchase(Purchase, Apartment):
     '''
     For calling another classes and getting information from user about
     an apartment which will be purchased. Kind of boss;)
     '''
-    def __init__(self, **kwargs):
-        '''
-        Initializing an object...
-        '''
-        self.purchase = Purchase(**kwargs)
-        self.apartment = Apartment(**kwargs)
-
-    def display(self):
-        self.purchase.display()
-        self.apartment.display()
 
     def prompt_init():
         '''
@@ -306,21 +281,11 @@ class ApartmentPurchase:
     prompt_init = staticmethod(prompt_init)
 
 
-class HousePurchase:
+class HousePurchase(Purchase, House):
     '''
     For calling another classes and getting information from user about
     a house which will be purchased. Kind of boss;)
     '''
-    def __init__(self, **kwargs):
-        '''
-        Initializing an object...
-        '''
-        self.purchase = Purchase(**kwargs)
-        self.house = House(**kwargs)
-
-    def display(self):
-        self.purchase.display()
-        self.house.display()
 
     def prompt_init():
         '''
@@ -337,6 +302,7 @@ class Agent:
     '''
     Class for agent which calls all other classes
     '''
+
     def __init__(self):
         '''
         Initializing an object...
@@ -345,7 +311,7 @@ class Agent:
 
     def display_properties(self):
         '''
-        Show all information 
+        Show all information
         '''
         for property in self.property_list:
             property.display()
@@ -368,6 +334,24 @@ class Agent:
         init_args = PropertyClass.prompt_init()
         self.property_list.append(PropertyClass(**init_args))
 
-agent = Agent()
-agent.add_property()
-agent.display_properties()
+    def get_description(self):
+        '''
+        Represent the detailed information about Agent for user
+        '''
+        print(
+            "Agent is an object that holds a list of all properties," + '\n' +
+            "displays those properties, and allows us to create new" + '\n' +
+            "ones. Creating properties will entail prompting the" + '\n' +
+            "user for the relevant" + "details for each property" + '\n' +
+            "type. This could be done in the Agent object, but then" + '\n' +
+            "Agent would need to know a lot of information about" + '\n' +
+            "the types of properties. ")
+
+    def get_dictionary():
+        '''
+        Return the dictionary with your answers about property
+        '''
+        init = Property.prompt_init()
+        return init
+
+    get_dictionary = staticmethod(get_dictionary)
