@@ -128,3 +128,11 @@ print(HousePurchase.prompt_init())
 # 'garage': 'attached', 'num_stories': '5', 'price': '300000', 'taxes':
 # '40000'}
 
+print(agent.get_dictionary())
+
+# Enter the square feet: 325
+# Enter number of bedrooms: 23
+# Enter number of baths: 2
+
+# {'square_feet': '325', 'beds': '23', 'baths': '2'}
+
