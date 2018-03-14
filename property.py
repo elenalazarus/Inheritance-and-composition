@@ -1,6 +1,8 @@
 # Application that allows an agent to manage properties available for
 # purchase or rent. The project will allow the agent to interact with
 # the objects using the Python interpreter prompt.
+
+
 class Property:
     '''
     Represent the information about some property. Gives specific
